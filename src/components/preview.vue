@@ -53,7 +53,7 @@
 import mount from './mount'
 // 代码高亮样式
 import '@/assets/css/highlight/default.css'
-import '@/assets/css/highlight/Atom-One-Light.css'
+import '@/assets/css/highlight/atom-one-light.css'
 
 // scoped style插件 ，解决webkit不支持scoped的问题
 import scopedCss from 'scopedcss'
