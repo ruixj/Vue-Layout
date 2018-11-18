@@ -12,14 +12,14 @@
         </mu-appbar>
         <mu-row>
             <mu-col  >
-               <mu-select-field class="select-field" autoWidth >
-                        <mu-menu-item title="application 布局设计" value="applayout">
+               <mu-select-field class="select-field" :value="layoutType" autoWidth  @change="handleTabChange">
+                        <mu-menu-item title="application 布局设计" value="app">
                         </mu-menu-item>
-                        <mu-menu-item title="screen 布局设计" value="screen layout">
+                        <mu-menu-item title="screen 布局设计" value="screen">
                         </mu-menu-item>
-                        <mu-menu-item title="view 布局设计" value="view layout">
+                        <mu-menu-item title="view 布局设计" value="view">
                         </mu-menu-item> 
-                        <mu-menu-item title="applet 设计" value="applet design">
+                        <mu-menu-item title="applet 设计" value="applet">
                         </mu-menu-item>                                                  
                     </mu-select-field>  
             </mu-col>        
@@ -86,6 +86,9 @@ export default {
             },
             selectField: {
                 value: '属性'
+            },
+            layoutType: {
+                value: 'app'
             }
         }
     },
@@ -130,6 +133,9 @@ export default {
         }
     },
     methods: {
+        handleTabChange(val) {
+            this.layoutType = val
+        },
         switchComponent() {
             let el = document.getElementById(this.parentComponent.info.id)
             el.click()
