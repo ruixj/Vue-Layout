@@ -5,6 +5,7 @@
             <div class="bar">
                 <mu-sub-header style="display:inline;">{{showType}}</mu-sub-header>
                 <mu-icon-button style="float:right;" icon="fullscreen" tooltip="全屏" @click="fullScreen" />
+                <mu-icon-button style="float:right;" icon="save" tooltip="保存" @click="savecode(components)" />
                 <mu-icon-button style="float:right;" icon="delete" tooltip="清空" @click="empty" />
                 <mu-icon-menu style="float:right;" icon="stay_current_portrait" tooltip="视图" :targetOrigin="{vertical: 'bottom',horizontal: 'left'}">
                     <mu-menu-item title="调整比例" @click="setWidth" />
@@ -15,7 +16,7 @@
                 <mu-icon-button v-if="$store.state.backupComponents.length" style="float:right;" icon="undo" tooltip="撤销" @click="undo" />
             </div>
             <mu-content-block :class="{'content':true,'active':showType!=='预览'}">
-                <pre v-show="showType==='CODE'" v-highlightjs="getSource(components)"><code class="html"></code></pre>
+                <pre v-show="showType==='CODE'" v-highlightjs="getSource(components)"><code    class="html"></code></pre>
                 <textarea v-show="showType==='编辑样式'" class="css-editor" placeholder=".vue-layout{ ... }" v-model="css"></textarea>
             </mu-content-block>
         </mu-paper>
@@ -54,7 +55,7 @@ import mount from './mount'
 // 代码高亮样式
 import '@/assets/css/highlight/default.css'
 import '@/assets/css/highlight/atom-one-light.css'
-
+import { createAppDef } from '@/services/api'
 // scoped style插件 ，解决webkit不支持scoped的问题
 import scopedCss from 'scopedcss'
 
@@ -149,8 +150,9 @@ export default {
 
         //读取云端数据
         let id = this.$route.params.id
-        let query = new this.$lean.Query('Share')
+        
         if (id) {
+           let query = new this.$lean.Query('Share')
             query.get(id).then(share => {
                 let store = share.get('store')
                 if (store) {
@@ -424,6 +426,32 @@ export default {
             code = code.replace(/\n\n/g, '\n')
 
             return code
+        },
+        savecode(components) {  
+            let code = `<template><section>`
+            components.filter(component => !component.parentId).forEach(component => {
+                code += component.template
+            })
+            code += `\n</section></template>`
+                //添加用户编辑的css
+            let cssText = this.$store.state.css
+            if (cssText) {
+                cssText = '\n<style scoped>\n' + cssText
+                cssText += '\n</style>\n'
+                code += cssText
+            }
+            code = this.$prettyDom(code)
+
+            /*把组件标签中包含的用户不需要的属性删掉，
+              因为它只是为了适应预览视图，
+              如，组件默认的“position:fixed”会使组件跑到预览视图外
+            */
+            code = code.replace(/ style=".*?"/g, '')
+            code = code.replace(/ tabIndex=".*?"/g, '')
+            code = code.replace(/ id=".*?"/g, '')
+            code = code.replace(/ data-component-active/g, '')
+            code = code.replace(/\n\n/g, '\n') 
+            createAppDef("test",code)          
         },
         getParentComponent(component) {
             let components = JSON.parse(JSON.stringify(this.$store.state.components))

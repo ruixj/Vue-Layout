@@ -31,8 +31,8 @@ import pretty from 'pretty'
 Vue.prototype.$prettyDom = pretty
 
 //云数据库
-import lean from './utils/leancloud storage'
-Vue.prototype.$lean=lean
+//import lean from './utils/leancloud storage'
+//Vue.prototype.$lean=lean
 
 
 Vue.config.productionTip = false

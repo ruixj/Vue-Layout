@@ -241,6 +241,9 @@
                 <li draggable="true" @dragstart="dragStart" data-name="Div">
                     <mu-icon value="check_box_outline_blank" /> div
                 </li>
+                <li draggable="true" @dragstart="dragStart" data-name="RouterView">
+                    <mu-icon value="view" /> RouterView
+                </li>
             </ul>
         </div>
     </section>

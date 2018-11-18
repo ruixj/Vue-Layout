@@ -8,7 +8,22 @@
             <mu-icon-button icon="share" slot="right" @click="share.open=true" />
             <mu-icon-button icon="settings" slot="right" @click="setting.open=true" />
             <mu-icon-button icon=":iconfont icon-github" slot="right" href="https://github.com/jaweii/Vue-Layout" /> 
+
         </mu-appbar>
+        <mu-row>
+            <mu-col  >
+               <mu-select-field class="select-field" autoWidth >
+                        <mu-menu-item title="application 布局设计" value="applayout">
+                        </mu-menu-item>
+                        <mu-menu-item title="screen 布局设计" value="screen layout">
+                        </mu-menu-item>
+                        <mu-menu-item title="view 布局设计" value="view layout">
+                        </mu-menu-item> 
+                        <mu-menu-item title="applet 设计" value="applet design">
+                        </mu-menu-item>                                                  
+                    </mu-select-field>  
+            </mu-col>        
+        </mu-row>
         <mu-row class="main-content">
             <mu-col class="attributes" :width="width.attr" :tablet="width.attr" :desktop="width.attr">
                 <mu-sub-header class="header">
